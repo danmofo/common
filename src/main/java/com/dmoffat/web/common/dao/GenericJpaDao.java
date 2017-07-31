@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
@@ -58,9 +59,19 @@ public abstract class GenericJpaDao<T, PK extends Serializable> implements Gener
         CriteriaQuery<T> criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery(type);
         Root<T> root = criteriaQuery.from(type);
         criteriaQuery.select(root);
-
         TypedQuery<T> query = getEntityManager().createQuery(criteriaQuery);
-
         return query.getResultList();
+    }
+
+    /**
+     * Shorthand helper methods to ease the writing of JPA typed queries
+     */
+
+    public CriteriaQuery<T> criteriaQuery() {
+        return getEntityManager().getCriteriaBuilder().createQuery(type);
+    }
+
+    public CriteriaBuilder criteriaBuilder() {
+        return getEntityManager().getCriteriaBuilder();
     }
 }
