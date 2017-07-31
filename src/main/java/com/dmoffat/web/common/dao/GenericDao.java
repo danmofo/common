@@ -14,4 +14,5 @@ public interface GenericDao<T, PK extends Serializable> {
     void delete(T entity);
     T update(T entity);
     List<T> findAll();
+    Long count();
 }

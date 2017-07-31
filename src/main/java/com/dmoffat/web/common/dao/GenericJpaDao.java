@@ -63,6 +63,18 @@ public abstract class GenericJpaDao<T, PK extends Serializable> implements Gener
         return query.getResultList();
     }
 
+    @Override
+    public Long count() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery(Long.class);
+
+        criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(type)));
+
+        TypedQuery<Long> query = getEntityManager().createQuery(criteriaQuery);
+
+        return query.getSingleResult();
+    }
+
     /**
      * Shorthand helper methods to ease the writing of JPA typed queries
      */
