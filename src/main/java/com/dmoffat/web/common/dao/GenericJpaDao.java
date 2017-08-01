@@ -56,10 +56,17 @@ public abstract class GenericJpaDao<T, PK extends Serializable> implements Gener
 
     @Override
     public List<T> findAll() {
+        return findAll(0, 10);
+    }
+
+    @Override
+    public List<T> findAll(int offset, int rows) {
         CriteriaQuery<T> criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery(type);
         Root<T> root = criteriaQuery.from(type);
         criteriaQuery.select(root);
         TypedQuery<T> query = getEntityManager().createQuery(criteriaQuery);
+        query.setFirstResult(offset);
+        query.setMaxResults(rows);
         return query.getResultList();
     }
 
